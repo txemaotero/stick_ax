@@ -9,7 +9,7 @@ Se define una función para juntar los ejes de una figura
 import matplotlib
 matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator # added 
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 
 
