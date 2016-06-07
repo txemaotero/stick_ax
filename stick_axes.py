@@ -15,40 +15,19 @@ import numpy as np
 
 def stick_axes(fig):
     """
-    Stick the axes of a figure. 'axes' is a list of list with the axes.
-    It could also be a list of axes.
-
-    Parameters:
-    -----------
-    axes : list
-        e.g. axes = [[ax1, ax2], [ax3, ax4]]
-        In this case, x_axes of ax1-ax3 and ax2-ax4 are stick and the same to
-        y_axes for ax1-ax2 and ax3-ax4.
-        ax1 is supposed to be in the top-left corner.
+    Stick the axes of a figure 'fig'. The subplots distribution is respected.
     """
+    # Se leen los ejes de la figura
     l_axes = fig.axes
-    print(l_axes)
+    # El número de columnas y filas
     nrows, ncols, _, _ = l_axes[0].get_subplotspec().get_geometry()
-    print(nrows, ncols)
+    # Se inicia una lista de ceros con la forma del grid
     axes = [[0 for j in range(ncols)] for i in range(nrows)]
+    # Se sitúa cada eje en su sitio de la grid
     for ax in l_axes:
         _, _, ind, _ = ax.get_subplotspec().get_geometry()
         row, col = ind//ncols, ind%ncols
-        print ind, row, col
         axes[row][col] = ax
-    # n_count = 0
-    # for i in range(nrows):
-    #     aux = []
-    #     for j in range(ncols):
-    #         aux.append(l_axes[n_count])
-    #         n_count += 1
-    #     axes.append(aux)
-    # Se mira si es un vector y se convierte en array para que todo sea consistente
-    # if type(axes[0]) is not list:
-    #     axes = [axes]
-    # Se leen el número de filas y de columnas
-    # nrows = len(axes)
-    # ncols = len(axes[0])
     # Se quita el interespaciado
     plt.subplots_adjust(hspace=0.001)
     plt.subplots_adjust(wspace=0.001)
@@ -59,20 +38,17 @@ def stick_axes(fig):
         for i in range(nrows-1):
             for j in range(ncols):
                 axes[i][j].set_xticklabels([])
+        # Se eliminan las etiquetas que solapan
+        nbins = len(axes[-1][-1].get_xticklabels())
+        for j in range(nrows):
+            for i in range(ncols-1):
+                axes[j][i].xaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
     # Ahora en y
     if ncols > 1:
         for j in range(ncols-1):
             for i in range(nrows):
                 axes[i][j+1].set_yticklabels([])
-    # Se eliminan las etiquetas que solapan
-    # En x
-    if ncols > 1:
-        nbins = len(axes[-1][-1].get_xticklabels())
-        for j in range(nrows):
-            for i in range(ncols-1):
-                axes[j][i].xaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
-    # En y
-    if nrows > 1:
+        # Se eliminan las etiquetas que solapan
         nbins = len(axes[-1][0].get_xticklabels())
         for i in range(nrows-1):
             for j in range(ncols):
