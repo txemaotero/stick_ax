@@ -13,7 +13,7 @@ from matplotlib.ticker import MaxNLocator
 import numpy as np
 
 
-def stick_axes(fig):
+def stick_axes(fig, stick_x=True, stick_y=True):
     """
     Stick the axes of a figure 'fig'. The subplots distribution is respected.
     """
@@ -29,30 +29,32 @@ def stick_axes(fig):
         row, col = ind//ncols, ind%ncols
         axes[row][col] = ax
     # Se quita el interespaciado
-    plt.subplots_adjust(hspace=0.001)
-    plt.subplots_adjust(wspace=0.001)
+    if stick_x: plt.subplots_adjust(hspace=0.001)
+    if stick_y: plt.subplots_adjust(wspace=0.001)
     # Se eliminan las etiquetas que queden en los intersticios
     # Primero en x
     print(axes)
     if nrows > 1:
-        for i in range(nrows-1):
-            for j in range(ncols):
-                axes[i][j].set_xticklabels([])
-        # Se eliminan las etiquetas que solapan
-        nbins = len(axes[-1][-1].get_xticklabels())
-        for j in range(nrows):
-            for i in range(ncols-1):
-                axes[j][i].xaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
+        if stick_y:
+            for i in range(nrows-1):
+                for j in range(ncols):
+                    axes[i][j].set_xticklabels([])
+            # Se eliminan las etiquetas que solapan
+            nbins = len(axes[-1][-1].get_xticklabels())
+            for j in range(nrows):
+                for i in range(ncols-1):
+                    axes[j][i].xaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
     # Ahora en y
     if ncols > 1:
-        for j in range(ncols-1):
-            for i in range(nrows):
-                axes[i][j+1].set_yticklabels([])
-        # Se eliminan las etiquetas que solapan
-        nbins = len(axes[-1][0].get_xticklabels())
-        for i in range(nrows-1):
-            for j in range(ncols):
-                axes[i+1][j].yaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
+        if stick_x:
+            for j in range(ncols-1):
+                for i in range(nrows):
+                    axes[i][j+1].set_yticklabels([])
+            # Se eliminan las etiquetas que solapan
+            nbins = len(axes[-1][0].get_xticklabels())
+            for i in range(nrows-1):
+                for j in range(ncols):
+                    axes[i+1][j].yaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
 
 
 fig = plt.figure()
