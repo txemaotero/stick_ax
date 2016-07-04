@@ -35,9 +35,9 @@ def stick_axes(fig, stick_x=True, stick_y=True):
     # Primero en x
     if nrows > 1:
         if stick_y:
-            for i in range(nrows):
-                for j in range(ncols-1):
-                    axes[i][j+1].set_yticklabels([])
+            for i in range(nrows-1):
+                for j in range(ncols):
+                    axes[i][j].set_xticklabels([])
             # Se eliminan las etiquetas que solapan
             nbins = len(axes[-1][-1].get_xticklabels())
             for j in range(nrows):
@@ -46,11 +46,11 @@ def stick_axes(fig, stick_x=True, stick_y=True):
     # Ahora en y
     if ncols > 1:
         if stick_x:
-            for i in range(nrows-1):
-                for j in range(ncols):
-                    axes[i][j].set_xticklabels([])
+            for j in range(ncols-1):
+                for i in range(nrows):
+                    axes[i][j+1].set_yticklabels([])
             # Se eliminan las etiquetas que solapan
-            nbins = len(axes[-1][0].get_xticklabels())
+            nbins = len(axes[-1][-1].get_xticklabels())
             for i in range(nrows-1):
                 for j in range(ncols):
                     axes[i+1][j].yaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
@@ -100,12 +100,6 @@ ax6.plot(x,y3)
 ax7.plot(x,y3)
 ax8.plot(x,y3)
 
-ax6.set_xlabel('hola')
-
 # axes = [[ ax1 ], [ ax2 ], [ ax3 ], [ ax4 ]] 
-plt.tight_layout()
-stick_axes(fig, stick_x=False, stick_y=True)
-# stick_axes(fig, stick_x=True, stick_y=False)
-# stick_axes(fig, stick_x=True, stick_y=True)
-# stick_axes(fig, stick_x=False, stick_y=False)
+stick_axes(fig)
 plt.show()
