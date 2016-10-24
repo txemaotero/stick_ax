@@ -39,7 +39,7 @@ def stick_axes(fig, stick_x=True, stick_y=True):
                 for j in range(ncols):
                     axes[i][j].set_xticklabels([])
             # Se eliminan las etiquetas que solapan
-            nbins = len(axes[-1][-1].get_xticklabels())
+            nbins = len(axes[-1][-1].get_xticklabels())-1
             for j in range(nrows):
                 for i in range(ncols-1):
                     axes[j][i].xaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
@@ -50,7 +50,7 @@ def stick_axes(fig, stick_x=True, stick_y=True):
                 for i in range(nrows):
                     axes[i][j+1].set_yticklabels([])
             # Se eliminan las etiquetas que solapan
-            nbins = len(axes[-1][-1].get_xticklabels())
+            nbins = len(axes[-1][-1].get_yticklabels())-1
             for i in range(nrows-1):
                 for j in range(ncols):
                     axes[i+1][j].yaxis.set_major_locator(MaxNLocator(nbins=nbins, prune='upper'))
